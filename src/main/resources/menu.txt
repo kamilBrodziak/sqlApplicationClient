@@ -1,0 +1,13 @@
+Welcome to sql Application Client!
+What do you want to do?
+    1. Advanced search
+    2. Get first and second name of mentors
+    3. Get nicks of mentors working at ...
+    4. Get fullname and number of person by first name
+    5. Get fullname and number of person by email
+    6. Add new applicant
+    7. Update applicant phone
+    8. Delete applicants by email domain
+    0. Exit
+
+Choice:
