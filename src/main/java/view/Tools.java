@@ -1,5 +1,7 @@
 package view;
 
+import model.Record;
+
 import java.util.*;
 
 public class Tools {
@@ -9,15 +11,16 @@ public class Tools {
         System.out.flush();
     }
 
-    public static List<Integer> getColumnsLength(List<ArrayList<String>> list) {
+    public static List<Integer> getColumnsLength(List<Record> recordList) {
         List<Integer> columnsLen = new ArrayList<>();
         int additionalSpace = 2;
 
-        for(int i = 0; i < list.get(0).size(); ++i) { columnsLen.add(0); }
+        for(int i = 0; i < recordList.get(0).getRecordAttributes().size(); ++i) { columnsLen.add(0); }
 
-        for(List<String> innerList: list) {
-            for(int i = 0; i < innerList.size(); ++i) {
-                int currStatLen = innerList.get(i).length() + additionalSpace;
+        for(Record record: recordList) {
+            List<String> recordAttributes = record.getRecordAttributes();
+            for(int i = 0; i < recordAttributes.size(); ++i) {
+                int currStatLen = recordAttributes.get(i).length() + additionalSpace;
                 if(currStatLen > columnsLen.get(i)) {
                     columnsLen.set(i, currStatLen);
                 }
