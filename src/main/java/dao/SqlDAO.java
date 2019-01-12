@@ -21,8 +21,7 @@ public class SqlDAO {
 
     private void connectDatabase() {
         try {
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "123"); // set user and password
-            stmt = c.createStatement();
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "123");
             c.setAutoCommit(false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,9 +33,7 @@ public class SqlDAO {
 
     private void disconnectDatabase() {
         try {
-            stmt.close();
             c.close();
-            stmt = null;
             c = null;
         } catch (Exception e) {
             e.printStackTrace();

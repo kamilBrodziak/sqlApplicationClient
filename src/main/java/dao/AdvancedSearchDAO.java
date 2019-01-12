@@ -47,8 +47,8 @@ public class AdvancedSearchDAO {
     private List<Record> getMentorRecords(String phrase, Connection connection) {
         List<Record> recordList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM mentors WHERE first_name LIKE ? OR last_name LIKE ? OR nick_name LIKE ? " +
-                    "OR phone_number LIKE ? OR email LIKE ? OR city LIKE ?";
+            String query = "SELECT * FROM mentors WHERE first_name ILIKE ? OR last_name ILIKE ? OR nick_name ILIKE ? " +
+                    "OR phone_number ILIKE ? OR email ILIKE ? OR city ILIKE ?";
             PreparedStatement pstmt = connection.prepareStatement(query);
             for(int i = 1; i < 7; i++){
                 pstmt.setString(i,"%" + phrase + "%");
@@ -66,6 +66,8 @@ public class AdvancedSearchDAO {
                 recordAttributes.add(rs.getString("city"));
                 recordList.add(new Record(recordAttributes));
             }
+            pstmt.close();
+            rs.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -96,10 +98,11 @@ public class AdvancedSearchDAO {
     private List<Record> getApplicantsRecords(String phrase, Connection connection) {
         List<Record> recordList = new ArrayList<>();
         try {
-            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM applicants WHERE first_name LIKE ? OR" +
-                    " last_name LIKE ? OR phone_number LIKE ? OR email LIKE ? OR application_code::varchar LIKE ?");
+            String query = "SELECT * FROM applicants WHERE first_name ILIKE ? OR last_name ILIKE ? " +
+                    "OR phone_number ILIKE ? OR email ILIKE ? OR application_code::varchar ILIKE ?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
             for(int i = 1; i < 6; i++){
-                pstmt.setString(i, "%" + phrase + "%");
+                pstmt.setString(i,"%" + phrase + "%");
             }
             ResultSet rs = pstmt.executeQuery();
 
@@ -113,6 +116,8 @@ public class AdvancedSearchDAO {
                 recordAttributes.add(rs.getInt("application_code") + "");
                 recordList.add(new Record(recordAttributes));
             }
+            pstmt.close();
+            rs.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
