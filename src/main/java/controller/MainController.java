@@ -1,14 +1,13 @@
 package controller;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dao.SqlDAO;
+import model.Applicant;
 import model.Table;
-import view.AdvancedSearch;
+import view.UserInput;
 import view.MenuView;
 import view.TablePrint;
 import view.Tools;
 
-import javax.swing.text.TableView;
 import java.util.List;
 
 public class MainController {
@@ -52,22 +51,53 @@ public class MainController {
 
                 break;
             case 6:
-
+                addApplicant();
                 break;
             case 7:
-
+                updateApplicant();
                 break;
             case 8:
-
+                deleteApplicant();
                 break;
         }
     }
 
     public void runAdvancedSearch() {
-        String phrase = AdvancedSearch.getSearchPhrase();
+        String phrase = UserInput.getSearchPhrase();
         List<Table> tableList = dao.getAdvancedSearchTables(phrase);
         for(int i = 0; i < tableList.size(); ++i) {
             TablePrint.showTable(tableList.get(i));
+        }
+    }
+
+    public void addApplicant() {
+        Applicant applicant = UserInput.getNewApplicant();
+        try {
+            dao.addApplicant(applicant);
+            List<Table> tableList = dao.getAdvancedSearchTables(applicant.getApplicationNumber() + "");
+            TablePrint.showTable(tableList.get(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateApplicant() {
+        List<String> fullName = UserInput.getApplicantNameAndPhone();
+        try {
+            dao.updateApplicantPhone(fullName);
+            List<Table> tableList = dao.getAdvancedSearchTables(fullName.get(2));
+            TablePrint.showTable(tableList.get(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteApplicant() {
+        String email = UserInput.getEmail();
+        try {
+            dao.deleteApplicants(email);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
